@@ -1,0 +1,39 @@
+# ==========================================
+# Audio Deploy CLI - 核心配置文件
+# ==========================================
+# 该文件定义全局检测路径池；安装包清单默认在 packages.csv 中维护。
+# ==========================================
+
+# ==========================================
+# 全局检测路径池 (Global Settings)
+# ==========================================
+# 用于 VST 插件的相对路径检测。脚本会拼接 base_path + check_vst_file 进行存在性判断。
+global_settings:
+  vst_paths:
+    # Windows VST 路径
+    vst2_x64:
+      - "C:\\Program Files\\VSTPlugins"
+      - "C:\\Program Files\\Steinberg\\VstPlugins"
+      - "C:\\Program Files\\Common Files\\VST2"
+    vst3_x64:
+      - "C:\\Program Files\\Common Files\\VST3"
+    aax:
+      - "C:\\Program Files\\Common Files\\Avid\\Audio\\Plug-Ins"
+    # macOS 路径（预留，本期暂不参与检测）
+    vst2_mac:
+      - "/Library/Audio/Plug-Ins/VST"
+      - "~/Library/Audio/Plug-Ins/VST"
+    vst3_mac:
+      - "/Library/Audio/Plug-Ins/VST3"
+      - "~/Library/Audio/Plug-Ins/VST3"
+    au_mac:
+      - "/Library/Audio/Plug-Ins/Components"
+      - "~/Library/Audio/Plug-Ins/Components"
+
+# ==========================================
+# 安装包列表（Packages）
+# ==========================================
+# 默认在 packages.csv 中用表格维护；存在 packages.csv 时其条目会与下方 YAML 合并，
+# 同文件名以 CSV 为准。仅保留全局路径池时可将 packages 留空 {}。
+# ==========================================
+packages: {}

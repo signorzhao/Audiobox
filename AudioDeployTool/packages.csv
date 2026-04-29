@@ -1,0 +1,7 @@
+filename,name,category,menu_subfolder,is_priority,win32_args,darwin_args,check_absolute_path,check_vst_file,vst_format,post_install_cmd,help_text,
+iLok License Support Win64.exe,iLok License Support,01_必备运行环境,,TRUE,/S,,C:\Program Files (x86)\iLok License Manager\iLok License Manager.exe,,,net start LDSvc,如安装失败请手动重启或卸载旧版 iLok Manager,
+reaper769_x64-install.exe,REAPER v7.69,02_宿主软件,,FALSE,/S,,C:\Program Files\REAPER\reaper.exe,,,,请确保后台没有正在运行的 REAPER 进程,
+SoundtoysV55Bundle_5.5.4.18982_64.exe,Soundtoys V5 Bundle,03_效果器插件,,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,Decapitator.vst3,vst3_x64,,VST3 未找到时请检查是否安装到自定义路径
+fabfilter_C2 0.21.exe,FabFilter Pro-C 2,03_效果器插件,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterc2.vst3,vst3_x64,,VST3 未找到时请检查是否安装到自定义路径
+fabfilter_L2.exe,fabfilter_L2,03_效果器插件,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterl2.vst3,vst3_x64,,
+fabfilter_Q3.exe,fabfilter_Q3,03_效果器插件,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterq3.vst3,vst3_x64,,

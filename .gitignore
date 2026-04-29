@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.spec
+.venv/
+venv/
+.env
+
+# Runtime generated
+AudioDeployTool/logs/*.log
+
+# Installer binaries (user-provided, not tracked)
+AudioDeployTool/Installers/**/*.exe
+AudioDeployTool/Installers/**/*.msi
+AudioDeployTool/Installers/**/*.pkg
+AudioDeployTool/Installers/**/*.dmg
+
+.DS_Store
