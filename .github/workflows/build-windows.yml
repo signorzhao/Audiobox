@@ -1,0 +1,68 @@
+# Windows 上使用 Python 3.11 打 PyInstaller onedir，并合并外置目录结构（无示例数据）。
+name: Build Windows (PyInstaller)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  pyinstaller:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: AudioDeployTool/requirements.txt
+
+      - name: Install dependencies and PyInstaller
+        working-directory: AudioDeployTool
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build onedir
+        working-directory: AudioDeployTool
+        run: >
+          pyinstaller --noconfirm --clean --name AudioDeploy --onedir --windowed main.py
+
+      - name: Assemble distributable folder
+        shell: pwsh
+        run: |
+          $root = $env:GITHUB_WORKSPACE
+          $tool = Join-Path $root "AudioDeployTool"
+          $dist = Join-Path $tool "dist" "AudioDeploy"
+          $stage = Join-Path $root "staging" "AudioDeploy"
+          $sidecar = Join-Path $tool "packaging" "default_sidecar"
+
+          if (-not (Test-Path $dist)) { throw "dist/AudioDeploy not found after PyInstaller" }
+
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+          Copy-Item -Path (Join-Path $dist "*") -Destination $stage -Recurse -Force
+
+          Copy-Item -Path (Join-Path $tool "config.yaml") -Destination $stage -Force
+          Copy-Item -Path (Join-Path $tool "locales") -Destination (Join-Path $stage "locales") -Recurse -Force
+
+          Copy-Item -Path (Join-Path $sidecar "packages.csv") -Destination $stage -Force
+          Copy-Item -Path (Join-Path $sidecar "README.txt") -Destination $stage -Force
+
+          $instDest = Join-Path $stage "Installers"
+          New-Item -ItemType Directory -Force -Path $instDest | Out-Null
+          Copy-Item -Path (Join-Path $sidecar "Installers" "*") -Destination $instDest -Recurse -Force
+
+          New-Item -ItemType Directory -Force -Path (Join-Path $stage "logs") | Out-Null
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AudioDeploy-Windows-${{ github.sha }}
+          path: staging/AudioDeploy
+          if-no-files-found: error

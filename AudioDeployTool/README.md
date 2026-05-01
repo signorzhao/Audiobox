@@ -31,6 +31,8 @@ python main.py --gui --no-uac   # 图形界面下调试（跳过提权）
 
 Windows 11 下 PyInstaller 打包 exe，并保持 **`packages.csv` / `config.yaml` / `Installers/` 与 exe 同目录可编辑** 的说明见：[Windows11下打包EXE与外置配置说明.md](../Docs/Windows11下打包EXE与外置配置说明.md)。
 
+云端打包：仓库 **GitHub Actions**（`.github/workflows/build-windows.yml`）在 `main` 推送、PR 或手动运行时构建 Windows 产物，可在 Actions 页面下载 **Artifacts**（内含 exe、`_internal`、外置目录骨架，无示例安装包）。
+
 ## 目录结构
 
 ```

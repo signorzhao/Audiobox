@@ -196,3 +196,15 @@ AudioDeploy/                    ← 可随意命名
 |------|----------------------|
 | 源码运行 `python main.py` | `AudioDeployTool` 源码所在文件夹 |
 | 运行打好的 `AudioDeploy.exe` | **exe 所在文件夹**（外置配置与 `Installers` 放这里） |
+
+---
+
+## 8. GitHub Actions 云端打包（可选）
+
+仓库已配置工作流 **`.github/workflows/build-windows.yml`**：
+
+- 在 **windows-latest** 运行器上使用 **Python 3.11** 执行与上文相同的 **`pyinstaller --onedir --windowed`**。
+- 将 **`dist/AudioDeploy`** 与仓库内 **`AudioDeployTool/packaging/default_sidecar/`** 合并为 **`staging/AudioDeploy`**：内含 **`config.yaml`、`locales/`、仅表头的 `packages.csv`、`Installers/` 三个空分类目录、`logs/` 空目录**，以及说明 **`README.txt`**（无示例安装包，由你自行放入）。
+- 通过 **Actions → 对应运行 → Artifacts** 下载 **`AudioDeploy-Windows-<commit>`** 压缩内容即可分发。
+
+触发条件：**`main` 分支 push**、**指向 `main` 的 Pull Request**、以及 **手动 workflow_dispatch**。
