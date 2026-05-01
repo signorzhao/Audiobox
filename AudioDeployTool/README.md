@@ -6,7 +6,7 @@
 
 ### 环境要求
 
-- Python 3.10+
+- Python 3.10+（源码运行）；**Windows 下打包 exe 推荐使用 Python 3.11**，步骤见 [Windows11 打包说明](../Docs/Windows11下打包EXE与外置配置说明.md)。
 - Windows 10/11（主要平台）或 macOS（基础兼容）
 
 ### 安装依赖
