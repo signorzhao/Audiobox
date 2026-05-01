@@ -110,7 +110,7 @@ pyinstaller --noconfirm --clean --name AudioDeploy --onedir --windowed main.py
 | 参数 | 简单说明 |
 |------|----------|
 | `--onedir` | 生成「exe + 一堆依赖文件」，适合 PySide6，别删 `_internal`。 |
-| `--windowed` | 双击 exe 不弹出黑色命令行窗口。若要保留黑窗口看日志，把 `--windowed` 删掉再打包。 |
+| `--windowed` | 双击 exe 不弹出黑色命令行窗口。程序在 **frozen** 时默认走 **GUI**；需要终端菜单时在命令行运行 **`AudioDeploy.exe --cli`**。若要保留黑窗口看日志，把 `--windowed` 删掉再打包。 |
 | `--name AudioDeploy` | 生成的 exe 名字，可改成别的英文名。 |
 
 ### 2.3 若运行 exe 时提示缺 Qt 插件（少数电脑）
@@ -204,7 +204,7 @@ AudioDeploy/                    ← 可随意命名
 仓库已配置工作流 **`.github/workflows/build-windows.yml`**：
 
 - 在 **windows-latest** 运行器上使用 **Python 3.11** 执行与上文相同的 **`pyinstaller --onedir --windowed`**。
-- 将 **`dist/AudioDeploy`** 与仓库内 **`AudioDeployTool/packaging/default_sidecar/`** 合并为 **`staging/AudioDeploy`**：内含 **`config.yaml`、`locales/`、仅表头的 `packages.csv`、`Installers/` 三个空分类目录、`logs/` 空目录**，以及说明 **`README.txt`**（无示例安装包，由你自行放入）。
-- 通过 **Actions → 对应运行 → Artifacts** 下载 **`AudioDeploy-Windows-<commit>`** 压缩内容即可分发。
+- 将 **`dist/AudioDeploy`** 与仓库内 **`AudioDeployTool/packaging/default_sidecar/`** 合并为 **`staging/AudioDeploy`**：内含 **`config.yaml`、`locales/`、仅表头的 `packages.csv`、`Installers/` 三个空分类目录（含占位 `.gitkeep`）、`logs/` 空目录**，以及说明 **`README.txt`**（无示例安装包，由你自行放入）。上传 Artifact 时开启 **`include-hidden-files`**，避免仅含 `.gitkeep` 的目录在压缩包中丢失。
+- 通过 **Actions → 对应运行 → Artifacts** 下载 **`AudioDeploy-Windows-<commit>`** 压缩内容即可分发。打好的 **exe 默认启动图形界面**；需要终端菜单时在 PowerShell 中执行 **`.\AudioDeploy.exe --cli`**。
 
 触发条件：**`main` 分支 push**、**指向 `main` 的 Pull Request**、以及 **手动 workflow_dispatch**。

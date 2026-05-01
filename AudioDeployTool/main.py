@@ -52,12 +52,20 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Launch PySide6 graphical interface (Windows/macOS).",
     )
+    parser.add_argument(
+        "--cli",
+        action="store_true",
+        help="Force terminal CLI. When running a PyInstaller exe, GUI is the default unless this flag is set.",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = _parse_args()
-    if args.gui:
+    frozen = getattr(sys, "frozen", False)
+    # 打包后双击无控制台：默认可直接进 GUI；需要终端菜单时用 --cli
+    use_gui = (not frozen and args.gui) or (frozen and not args.cli)
+    if use_gui:
         from gui_main import run_gui
 
         return run_gui(lang=args.lang, skip_uac=args.no_uac)

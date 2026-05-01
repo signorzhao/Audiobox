@@ -56,9 +56,18 @@ jobs:
 
           $instDest = Join-Path $stage "Installers"
           New-Item -ItemType Directory -Force -Path $instDest | Out-Null
-          Copy-Item -Path (Join-Path $sidecar "Installers" "*") -Destination $instDest -Recurse -Force
+          $instSrc = Join-Path $sidecar "Installers"
+          foreach ($item in (Get-ChildItem -LiteralPath $instSrc -Force)) {
+            Copy-Item -LiteralPath $item.FullName -Destination $instDest -Recurse -Force
+          }
 
           New-Item -ItemType Directory -Force -Path (Join-Path $stage "logs") | Out-Null
+
+          $expect = @("01_必备运行环境", "02_宿主软件", "03_效果器插件")
+          foreach ($name in $expect) {
+            $p = Join-Path $instDest $name
+            if (-not (Test-Path -LiteralPath $p)) { throw "Installers/$name missing after sidecar copy" }
+          }
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -66,3 +75,5 @@ jobs:
           name: AudioDeploy-Windows-${{ github.sha }}
           path: staging/AudioDeploy
           if-no-files-found: error
+          # 默认会排除以「.」开头的文件，侧车里用 .gitkeep 占位时子目录会丢
+          include-hidden-files: true

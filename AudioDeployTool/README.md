@@ -27,6 +27,8 @@ python main.py --gui --lang en-US
 python main.py --gui --no-uac   # 图形界面下调试（跳过提权）
 ```
 
+PyInstaller 打成的 **exe**：默认**直接进图形界面**（双击即可）；需要终端菜单时加 **`--cli`**。
+
 也可直接：`python gui_main.py`（等价于仅启动 GUI）。
 
 Windows 11 下 PyInstaller 打包 exe，并保持 **`packages.csv` / `config.yaml` / `Installers/` 与 exe 同目录可编辑** 的说明见：[Windows11下打包EXE与外置配置说明.md](../Docs/Windows11下打包EXE与外置配置说明.md)。
