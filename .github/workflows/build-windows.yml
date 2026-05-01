@@ -63,7 +63,7 @@ jobs:
 
           New-Item -ItemType Directory -Force -Path (Join-Path $stage "logs") | Out-Null
 
-          $expect = @("01_必备运行环境", "02_宿主软件", "03_效果器插件")
+          $expect = @("daw", "software", "plugin")
           foreach ($name in $expect) {
             $p = Join-Path $instDest $name
             if (-not (Test-Path -LiteralPath $p)) { throw "Installers/$name missing after sidecar copy" }

@@ -146,9 +146,9 @@ AudioDeploy/                    ← 可随意命名
 │   ├── zh-CN.json
 │   └── en-US.json
 └── Installers/
-    ├── 01_必备运行环境/
-    ├── 02_宿主软件/
-    └── 03_效果器插件/
+    ├── daw/
+    ├── software/
+    └── plugin/
 ```
 
 **用户以后只改：** `Installers\` 里的安装包、`packages.csv`（和必要时 `config.yaml`），**不用**再找你重新打 exe，除非你改了程序代码。

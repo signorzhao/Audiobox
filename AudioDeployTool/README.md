@@ -58,14 +58,14 @@ AudioDeployTool/
 │   └── en-US.json       # 英文语言包
 ├── logs/                # 运行时错误日志输出
 └── Installers/          # 安装包存放目录
-    ├── 01_必备运行环境/
-    ├── 02_宿主软件/
-    └── 03_效果器插件/
+    ├── daw/             # 宿主 / DAW
+    ├── software/      # 运行库与工具
+    └── plugin/        # 效果器与插件
 ```
 
 ## 如何添加新安装包
 
-1. 将安装包文件放入 `Installers/<一级分类目录>/` 下；若需要菜单中的「子文件夹 + 全选本组」，可再放一层子目录（如 `Installers/03_效果器插件/fabfilter/xxx.exe`），或在表格中填写 `menu_subfolder`。
+1. 将安装包文件放入 `Installers/<一级分类目录>/` 下（`daw`、`software`、`plugin` 与 `packages.csv` 的 `category` 一致）；若需要菜单中的「子文件夹 + 全选本组」，可再放一层子目录（如 `Installers/plugin/fabfilter/xxx.exe`），或在表格中填写 `menu_subfolder`。
 2. 在 `packages.csv` 中追加一行（可用 Excel、Numbers 或文本编辑器；**UTF-8** 保存，Excel 建议带 BOM 的 UTF-8，本工具已支持 `utf-8-sig`）。
 
 ### packages.csv 列说明

@@ -1,67 +1,67 @@
 ﻿filename,name,category,menu_subfolder,is_priority,win32_args,darwin_args,check_absolute_path,check_vst_file,vst_format,post_install_cmd,help_text
-iLok License Support Win64.exe,iLok License Support,01_必备运行环境,,TRUE,/S,,C:\Program Files (x86)\iLok License Manager\iLok License Manager.exe,,,net start LDSvc,如安装失败请手动重启或卸载旧版 iLok Manager
-reaper769_x64-install.exe,REAPER v7.69,02_宿主软件,,FALSE,/S,,C:\Program Files\REAPER\reaper.exe,,,,请确保后台没有正在运行的 REAPER 进程
-SoundtoysV55Bundle_5.5.4.18982_64.exe,Soundtoys V5 Bundle,03_效果器插件,,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,Decapitator.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
-fabfilter_C2 0.21.exe,FabFilter Pro-C 2,03_效果器插件,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterc2.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
-fabfilter_L2.exe,fabfilter_L2,03_效果器插件,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterl2.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
-fabfilter_Q3.exe,fabfilter_Q3,03_效果器插件,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterq3.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
-FakeStressPlugin_01.bat,Stress dummy 01,03_效果器插件,stress_pair_01,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_02.bat,Stress dummy 02,03_效果器插件,stress_pair_01,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_03.bat,Stress dummy 03,03_效果器插件,stress_pair_02,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_04.bat,Stress dummy 04,03_效果器插件,stress_pair_02,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_05.bat,Stress dummy 05,03_效果器插件,stress_pair_03,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_06.bat,Stress dummy 06,03_效果器插件,stress_pair_03,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_07.bat,Stress dummy 07,03_效果器插件,stress_pair_04,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_08.bat,Stress dummy 08,03_效果器插件,stress_pair_04,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_09.bat,Stress dummy 09,03_效果器插件,stress_pair_05,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_10.bat,Stress dummy 10,03_效果器插件,stress_pair_05,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_11.bat,Stress dummy 11,03_效果器插件,stress_pair_06,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_12.bat,Stress dummy 12,03_效果器插件,stress_pair_06,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_13.bat,Stress dummy 13,03_效果器插件,stress_pair_07,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_14.bat,Stress dummy 14,03_效果器插件,stress_pair_07,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_15.bat,Stress dummy 15,03_效果器插件,stress_pair_08,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_16.bat,Stress dummy 16,03_效果器插件,stress_pair_08,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_17.bat,Stress dummy 17,03_效果器插件,stress_pair_09,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_18.bat,Stress dummy 18,03_效果器插件,stress_pair_09,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_19.bat,Stress dummy 19,03_效果器插件,stress_pair_10,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_20.bat,Stress dummy 20,03_效果器插件,stress_pair_10,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_21.bat,Stress dummy 21,03_效果器插件,stress_pair_11,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_22.bat,Stress dummy 22,03_效果器插件,stress_pair_11,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_23.bat,Stress dummy 23,03_效果器插件,stress_pair_12,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_24.bat,Stress dummy 24,03_效果器插件,stress_pair_12,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_25.bat,Stress dummy 25,03_效果器插件,stress_pair_13,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_26.bat,Stress dummy 26,03_效果器插件,stress_pair_13,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_27.bat,Stress dummy 27,03_效果器插件,stress_pair_14,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_28.bat,Stress dummy 28,03_效果器插件,stress_pair_14,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_29.bat,Stress dummy 29,03_效果器插件,stress_pair_15,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_30.bat,Stress dummy 30,03_效果器插件,stress_pair_15,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_31.bat,Stress dummy 31,03_效果器插件,stress_pair_16,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_32.bat,Stress dummy 32,03_效果器插件,stress_pair_16,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_33.bat,Stress dummy 33,03_效果器插件,stress_pair_17,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_34.bat,Stress dummy 34,03_效果器插件,stress_pair_17,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_35.bat,Stress dummy 35,03_效果器插件,stress_pair_18,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_36.bat,Stress dummy 36,03_效果器插件,stress_pair_18,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_37.bat,Stress dummy 37,03_效果器插件,stress_pair_19,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_38.bat,Stress dummy 38,03_效果器插件,stress_pair_19,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_39.bat,Stress dummy 39,03_效果器插件,stress_pair_20,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_40.bat,Stress dummy 40,03_效果器插件,stress_pair_20,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_41.bat,Stress dummy 41,03_效果器插件,stress_pair_21,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_42.bat,Stress dummy 42,03_效果器插件,stress_pair_21,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_43.bat,Stress dummy 43,03_效果器插件,stress_pair_22,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_44.bat,Stress dummy 44,03_效果器插件,stress_pair_22,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_45.bat,Stress dummy 45,03_效果器插件,stress_pair_23,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_46.bat,Stress dummy 46,03_效果器插件,stress_pair_23,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_47.bat,Stress dummy 47,03_效果器插件,stress_pair_24,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_48.bat,Stress dummy 48,03_效果器插件,stress_pair_24,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_49.bat,Stress dummy 49,03_效果器插件,stress_pair_25,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_50.bat,Stress dummy 50,03_效果器插件,stress_pair_25,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_51.bat,Stress dummy 51,03_效果器插件,stress_pair_26,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_52.bat,Stress dummy 52,03_效果器插件,stress_pair_26,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_53.bat,Stress dummy 53,03_效果器插件,stress_pair_27,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_54.bat,Stress dummy 54,03_效果器插件,stress_pair_27,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_55.bat,Stress dummy 55,03_效果器插件,stress_pair_28,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_56.bat,Stress dummy 56,03_效果器插件,stress_pair_28,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_57.bat,Stress dummy 57,03_效果器插件,stress_pair_29,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_58.bat,Stress dummy 58,03_效果器插件,stress_pair_29,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_59.bat,Stress dummy 59,03_效果器插件,stress_pair_30,FALSE,,,,,,,仅用于菜单/UI压力测试
-FakeStressPlugin_60.bat,Stress dummy 60,03_效果器插件,stress_pair_30,FALSE,,,,,,,仅用于菜单/UI压力测试
+iLok License Support Win64.exe,iLok License Support,software,,TRUE,/S,,C:\Program Files (x86)\iLok License Manager\iLok License Manager.exe,,,net start LDSvc,如安装失败请手动重启或卸载旧版 iLok Manager
+reaper769_x64-install.exe,REAPER v7.69,daw,,FALSE,/S,,C:\Program Files\REAPER\reaper.exe,,,,请确保后台没有正在运行的 REAPER 进程
+SoundtoysV55Bundle_5.5.4.18982_64.exe,Soundtoys V5 Bundle,plugin,,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,Decapitator.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
+fabfilter_C2 0.21.exe,FabFilter Pro-C 2,plugin,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterc2.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
+fabfilter_L2.exe,fabfilter_L2,plugin,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterl2.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
+fabfilter_Q3.exe,fabfilter_Q3,plugin,fabfilter,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,fabfilterq3.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径
+FakeStressPlugin_01.bat,Stress dummy 01,plugin,stress_pair_01,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_02.bat,Stress dummy 02,plugin,stress_pair_01,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_03.bat,Stress dummy 03,plugin,stress_pair_02,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_04.bat,Stress dummy 04,plugin,stress_pair_02,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_05.bat,Stress dummy 05,plugin,stress_pair_03,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_06.bat,Stress dummy 06,plugin,stress_pair_03,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_07.bat,Stress dummy 07,plugin,stress_pair_04,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_08.bat,Stress dummy 08,plugin,stress_pair_04,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_09.bat,Stress dummy 09,plugin,stress_pair_05,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_10.bat,Stress dummy 10,plugin,stress_pair_05,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_11.bat,Stress dummy 11,plugin,stress_pair_06,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_12.bat,Stress dummy 12,plugin,stress_pair_06,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_13.bat,Stress dummy 13,plugin,stress_pair_07,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_14.bat,Stress dummy 14,plugin,stress_pair_07,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_15.bat,Stress dummy 15,plugin,stress_pair_08,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_16.bat,Stress dummy 16,plugin,stress_pair_08,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_17.bat,Stress dummy 17,plugin,stress_pair_09,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_18.bat,Stress dummy 18,plugin,stress_pair_09,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_19.bat,Stress dummy 19,plugin,stress_pair_10,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_20.bat,Stress dummy 20,plugin,stress_pair_10,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_21.bat,Stress dummy 21,plugin,stress_pair_11,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_22.bat,Stress dummy 22,plugin,stress_pair_11,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_23.bat,Stress dummy 23,plugin,stress_pair_12,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_24.bat,Stress dummy 24,plugin,stress_pair_12,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_25.bat,Stress dummy 25,plugin,stress_pair_13,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_26.bat,Stress dummy 26,plugin,stress_pair_13,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_27.bat,Stress dummy 27,plugin,stress_pair_14,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_28.bat,Stress dummy 28,plugin,stress_pair_14,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_29.bat,Stress dummy 29,plugin,stress_pair_15,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_30.bat,Stress dummy 30,plugin,stress_pair_15,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_31.bat,Stress dummy 31,plugin,stress_pair_16,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_32.bat,Stress dummy 32,plugin,stress_pair_16,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_33.bat,Stress dummy 33,plugin,stress_pair_17,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_34.bat,Stress dummy 34,plugin,stress_pair_17,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_35.bat,Stress dummy 35,plugin,stress_pair_18,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_36.bat,Stress dummy 36,plugin,stress_pair_18,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_37.bat,Stress dummy 37,plugin,stress_pair_19,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_38.bat,Stress dummy 38,plugin,stress_pair_19,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_39.bat,Stress dummy 39,plugin,stress_pair_20,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_40.bat,Stress dummy 40,plugin,stress_pair_20,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_41.bat,Stress dummy 41,plugin,stress_pair_21,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_42.bat,Stress dummy 42,plugin,stress_pair_21,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_43.bat,Stress dummy 43,plugin,stress_pair_22,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_44.bat,Stress dummy 44,plugin,stress_pair_22,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_45.bat,Stress dummy 45,plugin,stress_pair_23,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_46.bat,Stress dummy 46,plugin,stress_pair_23,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_47.bat,Stress dummy 47,plugin,stress_pair_24,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_48.bat,Stress dummy 48,plugin,stress_pair_24,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_49.bat,Stress dummy 49,plugin,stress_pair_25,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_50.bat,Stress dummy 50,plugin,stress_pair_25,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_51.bat,Stress dummy 51,plugin,stress_pair_26,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_52.bat,Stress dummy 52,plugin,stress_pair_26,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_53.bat,Stress dummy 53,plugin,stress_pair_27,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_54.bat,Stress dummy 54,plugin,stress_pair_27,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_55.bat,Stress dummy 55,plugin,stress_pair_28,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_56.bat,Stress dummy 56,plugin,stress_pair_28,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_57.bat,Stress dummy 57,plugin,stress_pair_29,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_58.bat,Stress dummy 58,plugin,stress_pair_29,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_59.bat,Stress dummy 59,plugin,stress_pair_30,FALSE,,,,,,,仅用于菜单/UI压力测试
+FakeStressPlugin_60.bat,Stress dummy 60,plugin,stress_pair_30,FALSE,,,,,,,仅用于菜单/UI压力测试

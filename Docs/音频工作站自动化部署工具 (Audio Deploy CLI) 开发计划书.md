@@ -44,7 +44,7 @@ AudioDeployTool/
 │   ├── zh-CN.json
 │   └── en-US.json
 ├── logs/                   # 运行日志与错误报告输出目录
-└── Installers/             # 安装包存放目录 (需按需建立子文件夹如 01_Env, 02_DAW)
+└── Installers/             # 安装包存放目录 (一级目录如 daw / software / plugin)
 ```
 
 ---
@@ -78,7 +78,7 @@ packages:
   # 核心环境：绝对路径检测 + 提权服务唤醒
   "iLok License Support Win64.exe":
     name: "iLok License Support"
-    category: "01_必备运行环境"
+    category: "software"
     is_priority: true
     win32_args: '/s /f1"C:\\ilok_setup.iss" /v"/qn /norestart"'
     check_absolute_path: "C:\\Program Files (x86)\\iLok License Manager\\iLok License Manager.exe"
@@ -88,7 +88,7 @@ packages:
   # 宿主软件：绝对路径检测
   "reaper769_x64-install.exe":
     name: "REAPER v7.69"
-    category: "02_宿主软件 (DAW)"
+    category: "daw"
     is_priority: false
     win32_args: "/S"
     check_absolute_path: "C:\\Program Files\\REAPER\\reaper.exe"
@@ -97,7 +97,7 @@ packages:
   # 效果器插件：全局池相对路径检测
   "SoundtoysV55Bundle_5.5.4.18982_64.exe":
     name: "Soundtoys V5 Bundle"
-    category: "03_效果器插件"
+    category: "plugin"
     is_priority: false
     win32_args: "/VERYSIlENT /SUPPRESSMSGBOXES /NORESTART"
     check_vst_file: "Decapitator.vst3"
@@ -199,7 +199,7 @@ class AudioDeployController:
         # TODO: 待开发人员实现 - 遍历 self.installers_dir
         # TODO: 待开发人员实现 - 结合 self.is_installed() 给已安装的加上 self.i18n['tag_installed']
         # 演示用假数据:
-        choices.append(questionary.Separator(f"=== 01_必备运行环境 ==="))
+        choices.append(questionary.Separator(f"=== software ==="))
         choices.append(questionary.Choice("iLok License Support Win64.exe", value="iLok License Support Win64.exe"))
         
         selected_files = questionary.checkbox(
