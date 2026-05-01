@@ -25,5 +25,16 @@
   "msg_log_written": "Error log written to: {path}",
   "error_config_missing": "Config file not found: {path}",
   "error_locale_missing": "Locale file not found: {path}",
-  "error_installer_missing": "Installer file not found: {path}"
+  "error_installer_missing": "Installer file not found: {path}",
+  "gui_window_title": "Audio Workstation Deploy",
+  "gui_tree_column": "Components",
+  "gui_subfolder_label": "📂 {name}",
+  "gui_select_all": "Select all",
+  "gui_clear": "Clear selection",
+  "gui_install": "Install selected",
+  "gui_install_running": "Installing, please wait…",
+  "gui_report_title": "Installation summary",
+  "gui_no_selection": "Please check at least one installer.",
+  "gui_uac_title": "Administrator rights required",
+  "gui_uac_body": "A UAC prompt will appear next. Approve it to install drivers and write registry keys."
 }

@@ -62,12 +62,22 @@ class Executor:
         self.logger = logger
         self.console = console or Console()
 
-    def run(self, items: list[MenuItem]) -> list[InstallResult]:
+    def run(
+        self,
+        items: list[MenuItem],
+        *,
+        show_progress: bool = True,
+    ) -> list[InstallResult]:
         if not items:
             return []
 
         ordered = _sort_by_priority(items)
         results: list[InstallResult] = []
+
+        if not show_progress:
+            for item in ordered:
+                results.append(self._install_one(item))
+            return results
 
         with Progress(
             SpinnerColumn(),

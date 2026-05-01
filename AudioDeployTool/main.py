@@ -5,11 +5,10 @@ from __future__ import annotations
 import argparse
 import locale
 import sys
-from pathlib import Path
 
 from rich.console import Console
 
-from config_loader import ConfigLoader
+from config_loader import ConfigLoader, runtime_base_dir
 from detector import InstallDetector
 from executor import Executor
 from logger import ErrorLogger
@@ -48,14 +47,24 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Skip UAC elevation prompt (Windows only). Useful for dry-run / debugging.",
     )
+    parser.add_argument(
+        "--gui",
+        action="store_true",
+        help="Launch PySide6 graphical interface (Windows/macOS).",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = _parse_args()
+    if args.gui:
+        from gui_main import run_gui
+
+        return run_gui(lang=args.lang, skip_uac=args.no_uac)
+
     console = Console()
 
-    base_dir = Path(__file__).parent.absolute()
+    base_dir = runtime_base_dir()
     loader = ConfigLoader(base_dir)
 
     lang = args.lang or _detect_default_lang()

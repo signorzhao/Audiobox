@@ -25,5 +25,16 @@
   "msg_log_written": "错误日志已写入: {path}",
   "error_config_missing": "未找到配置文件: {path}",
   "error_locale_missing": "未找到语言包: {path}",
-  "error_installer_missing": "安装包文件不存在: {path}"
+  "error_installer_missing": "安装包文件不存在: {path}",
+  "gui_window_title": "音频工作站部署工具",
+  "gui_tree_column": "组件",
+  "gui_subfolder_label": "📂 {name}",
+  "gui_select_all": "全选",
+  "gui_clear": "清除勾选",
+  "gui_install": "开始安装",
+  "gui_install_running": "正在安装，请稍候…",
+  "gui_report_title": "安装结果",
+  "gui_no_selection": "请至少勾选一个安装包。",
+  "gui_uac_title": "需要管理员权限",
+  "gui_uac_body": "接下来将弹出 UAC 提示；请同意以安装驱动与写入注册表。"
 }

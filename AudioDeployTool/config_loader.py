@@ -3,12 +3,23 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 from packages_csv import load_packages_csv
+
+
+def runtime_base_dir() -> Path:
+    """应用根目录：开发时为源码目录；PyInstaller 打包后为 exe 所在目录。
+
+    将 `packages.csv`、`config.yaml`、`Installers/` 与 exe 同目录放置即可在不打新包的情况下增改。
+    """
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
 
 
 class ConfigLoader:
