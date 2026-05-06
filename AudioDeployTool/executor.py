@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -67,16 +68,23 @@ class Executor:
         items: list[MenuItem],
         *,
         show_progress: bool = True,
+        on_item_begin: Callable[[int, int, MenuItem], None] | None = None,
+        on_item_end: Callable[[int, int], None] | None = None,
     ) -> list[InstallResult]:
         if not items:
             return []
 
         ordered = _sort_by_priority(items)
         results: list[InstallResult] = []
+        n = len(ordered)
 
         if not show_progress:
-            for item in ordered:
+            for i, item in enumerate(ordered):
+                if on_item_begin:
+                    on_item_begin(i, n, item)
                 results.append(self._install_one(item))
+                if on_item_end:
+                    on_item_end(i, n)
             return results
 
         with Progress(
@@ -88,13 +96,17 @@ class Executor:
             console=self.console,
         ) as progress:
             total_task = progress.add_task(
-                f"[yellow]{self.i18n['progress_total']}", total=len(ordered)
+                f"[yellow]{self.i18n['progress_total']}", total=n
             )
 
-            for item in ordered:
+            for i, item in enumerate(ordered):
+                if on_item_begin:
+                    on_item_begin(i, n, item)
                 desc = self.i18n["progress_current"].format(app_name=item.display_name)
                 progress.update(total_task, description=f"[cyan]{desc}")
                 results.append(self._install_one(item))
+                if on_item_end:
+                    on_item_end(i, n)
                 progress.advance(total_task)
 
         return results

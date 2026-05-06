@@ -33,6 +33,7 @@
   "gui_clear": "清除勾选",
   "gui_install": "开始安装",
   "gui_install_running": "正在安装，请稍候…",
+  "gui_install_progress": "正在安装 ({current}/{total})：{app_name}",
   "gui_report_title": "安装结果",
   "gui_no_selection": "请至少勾选一个安装包。",
   "gui_uac_title": "需要管理员权限",

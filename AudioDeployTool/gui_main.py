@@ -159,6 +159,8 @@ class InstallWorker(QThread):
 
     finished_ok = Signal(object)
     failed = Signal(str)
+    item_started = Signal(int, int, str)
+    item_finished = Signal(int, int)
 
     def __init__(
         self,
@@ -178,7 +180,19 @@ class InstallWorker(QThread):
         try:
             console = Console(file=open(os.devnull, "w"), width=120, force_terminal=True)
             executor = Executor(self._i18n, logger, console=console)
-            results = executor.run(self._items, show_progress=False)
+
+            def on_begin(i: int, total: int, item: MenuItem) -> None:
+                self.item_started.emit(i, total, item.display_name)
+
+            def on_end(i: int, total: int) -> None:
+                self.item_finished.emit(i + 1, total)
+
+            results = executor.run(
+                self._items,
+                show_progress=False,
+                on_item_begin=on_begin,
+                on_item_end=on_end,
+            )
             log_path = str(logger.path) if logger.path else None
             self.finished_ok.emit((results, log_path))
         except Exception as exc:  # noqa: BLE001
@@ -220,7 +234,10 @@ class MainWindow(QMainWindow):
         layout.addLayout(btn_row)
 
         self._progress = QProgressBar()
-        self._progress.setRange(0, 0)
+        self._progress.setRange(0, 1)
+        self._progress.setValue(0)
+        self._progress.setTextVisible(True)
+        self._progress.setFormat("%v / %m")
         self._progress.setVisible(False)
         layout.addWidget(self._progress)
 
@@ -249,14 +266,32 @@ class MainWindow(QMainWindow):
         self._btn_select_all.setEnabled(False)
         self._btn_clear.setEnabled(False)
         self._tree.setEnabled(False)
+        n = len(selected)
         self._progress.setVisible(True)
-        self._progress.setRange(0, 0)
+        self._progress.setRange(0, n)
+        self._progress.setValue(0)
         self._status.setText(self._i18n.get("gui_install_running", "正在安装…"))
 
         self._worker = InstallWorker(selected, self._i18n, self._logs_dir)
+        self._worker.item_started.connect(self._on_install_item_started)
+        self._worker.item_finished.connect(self._on_install_item_finished)
         self._worker.finished_ok.connect(self._on_install_finished)
         self._worker.failed.connect(self._on_install_failed)
         self._worker.start()
+
+    def _on_install_item_started(self, index0: int, total: int, app_name: str) -> None:
+        self._progress.setMaximum(total)
+        fmt = self._i18n.get(
+            "gui_install_progress",
+            "正在安装 ({current}/{total})：{app_name}",
+        )
+        self._status.setText(
+            fmt.format(current=index0 + 1, total=total, app_name=app_name)
+        )
+
+    def _on_install_item_finished(self, completed: int, total: int) -> None:
+        self._progress.setMaximum(total)
+        self._progress.setValue(completed)
 
     def _on_install_finished(self, payload: object) -> None:
         results, log_path = payload  # type: ignore[misc]
@@ -284,7 +319,8 @@ class MainWindow(QMainWindow):
 
     def _reset_install_ui(self) -> None:
         self._progress.setVisible(False)
-        self._progress.setRange(0, 100)
+        self._progress.setRange(0, 1)
+        self._progress.setValue(0)
         self._status.setText("")
         self._btn_install.setEnabled(True)
         self._btn_select_all.setEnabled(True)
