@@ -39,9 +39,14 @@ DEFAULT_LANG = "zh-CN"
 SUPPORTED_LANGS = ("zh-CN", "en-US")
 
 _TREE_SELECTION_QSS = """
-QTreeWidget { outline: none; }
+QTreeWidget {
+    outline: none;
+    border: none;
+}
 QTreeWidget::item {
     padding: 2px 4px;
+    background-color: transparent;
+    border: none;
 }
 QTreeWidget::item:hover {
     background-color: transparent;
@@ -49,16 +54,22 @@ QTreeWidget::item:hover {
 QTreeWidget::item:selected {
     background-color: transparent;
     color: palette(text);
+    border: none;
 }
 QTreeWidget::item:selected:!active {
     background-color: transparent;
     color: palette(text);
+}
+QTreeWidget::branch {
+    background-color: transparent;
+    border: none;
 }
 QTreeWidget::branch:hover {
     background-color: transparent;
 }
 QTreeWidget::branch:selected {
     background-color: transparent;
+    border: none;
 }
 """
 
@@ -115,7 +126,7 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
     """按 category → menu_subfolder 建树；仅叶子可勾选。返回 tree 与 path→MenuItem。"""
     tree = QTreeWidget()
     tree.setHeaderLabels([i18n.get("gui_tree_column", "组件")])
-    tree.setAlternatingRowColors(True)
+    tree.setAlternatingRowColors(False)
     tree.setUniformRowHeights(False)
     tree.setIndentation(24)
     qss, cat_fg, sub_fg = _tree_row_visual()
