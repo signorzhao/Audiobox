@@ -364,7 +364,7 @@ def run_gui(lang: str | None = None, *, skip_uac: bool = False) -> int:
     app = QApplication(sys.argv)
 
     import qdarkstyle
-    app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyside6'))
+    app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyside6', palette=qdarkstyle.LightPalette))
 
     if not skip_uac:
         if sys.platform == "win32" and not is_admin():
