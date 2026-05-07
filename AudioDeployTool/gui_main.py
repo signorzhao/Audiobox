@@ -38,98 +38,44 @@ from privilege import ensure_admin, is_admin
 DEFAULT_LANG = "zh-CN"
 SUPPORTED_LANGS = ("zh-CN", "en-US")
 
-# Windows / macOS 浅色：类似资源管理器的淡蓝选中
-_TREE_SELECTION_QSS_WIN = """
+_TREE_SELECTION_QSS = """
 QTreeWidget { outline: none; }
 QTreeWidget::item {
     padding: 2px 4px;
     border: 1px solid transparent;
 }
 QTreeWidget::item:hover {
-    background-color: #f0f7ff;
+    background-color: palette(midlight);
 }
 QTreeWidget::item:selected {
-    background-color: #dcebfd;
-    color: #1a1a1a;
-    border: 1px solid #a8cfff;
+    background-color: palette(highlight);
+    color: palette(highlighted-text);
 }
 QTreeWidget::item:selected:!active {
-    background-color: #e8e8e8;
-    color: #1a1a1a;
-    border: 1px solid #c8c8c8;
+    background-color: palette(midlight);
+    color: palette(text);
+}
+QTreeWidget::branch:!has-children:hover {
+    background-color: palette(midlight);
+}
+QTreeWidget::branch:!has-children:selected {
+    background-color: palette(highlight);
+}
+QTreeWidget::branch:!has-children:selected:!active {
+    background-color: palette(midlight);
 }
 """
-
-# macOS 深色主题：浅字 + 深底选中，避免沿用浅色样式导致看不清
-_TREE_SELECTION_QSS_MAC_DARK = """
-QTreeWidget { outline: none; }
-QTreeWidget::item {
-    padding: 2px 4px;
-    border: 1px solid transparent;
-    color: #e2e8f0;
-}
-QTreeWidget::item:hover {
-    background-color: #2d3548;
-}
-QTreeWidget::item:selected {
-    background-color: #3d4d6b;
-    color: #f8fafc;
-    border: 1px solid #6b8cce;
-}
-QTreeWidget::item:selected:!active {
-    background-color: #343b4d;
-    color: #e2e8f0;
-    border: 1px solid #5a6270;
-}
-"""
-
-# 层级：浅色下深字 + 淡分区底（与 _TREE_SELECTION_QSS_WIN 搭配）
-_TREE_CAT_FG_LIGHT = QColor("#0f172a")
-_TREE_SUB_FG_LIGHT = QColor("#475569")
-_TREE_CAT_ROW_BG_LIGHT = QColor(235, 239, 246)
-
-# macOS 深色：浅字 + 略亮的分类行带，与系统黑底区分
-_TREE_CAT_FG_DARK = QColor("#f8fafc")
-_TREE_SUB_FG_DARK = QColor("#cbd5e1")
-_TREE_CAT_ROW_BG_DARK = QColor(48, 52, 64)
-
-
-def _app_prefers_dark() -> bool:
-    """系统/应用为深色时返回 True（含 ColorScheme.Unknown 时用窗口底色推断）。"""
-    app = QApplication.instance()
-    if app is None:
-        return False
-    scheme = app.styleHints().colorScheme()
-    if scheme == Qt.ColorScheme.Dark:
-        return True
-    if scheme == Qt.ColorScheme.Light:
-        return False
-    bg = app.palette().color(QPalette.ColorRole.Window)
-    return bg.lightness() < 128
-
 
 def _tree_row_visual() -> tuple[str, QColor, QColor, QColor]:
-    """(树 QSS, 分类字色, 子文件夹字色, 分类行底色)。Windows 固定浅色方案；macOS 按深浅色切换。"""
-    if sys.platform != "darwin":
-        return (
-            _TREE_SELECTION_QSS_WIN,
-            _TREE_CAT_FG_LIGHT,
-            _TREE_SUB_FG_LIGHT,
-            _TREE_CAT_ROW_BG_LIGHT,
-        )
-    if _app_prefers_dark():
-        return (
-            _TREE_SELECTION_QSS_MAC_DARK,
-            _TREE_CAT_FG_DARK,
-            _TREE_SUB_FG_DARK,
-            _TREE_CAT_ROW_BG_DARK,
-        )
-    return (
-        _TREE_SELECTION_QSS_WIN,
-        _TREE_CAT_FG_LIGHT,
-        _TREE_SUB_FG_LIGHT,
-        _TREE_CAT_ROW_BG_LIGHT,
-    )
+    """从系统 palette 派生分类/子文件夹颜色，自动适配深浅模式。"""
+    pal = QApplication.instance().palette()
+    cat_fg = pal.color(QPalette.ColorRole.Text)
+    sub_fg = QColor(cat_fg)
+    sub_fg.setAlphaF(0.65)
+    base = pal.color(QPalette.ColorRole.Base)
+    alt = pal.color(QPalette.ColorRole.AlternateBase)
+    cat_row_bg = alt if alt != base else QColor(base.red() ^ 0x10, base.green() ^ 0x10, base.blue() ^ 0x10)
+    return _TREE_SELECTION_QSS, cat_fg, sub_fg, cat_row_bg
 
 
 def _tree_hierarchy_fonts(tree: QTreeWidget) -> tuple[QFont, QFont]:
