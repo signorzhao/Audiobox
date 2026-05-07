@@ -45,24 +45,24 @@ QTreeWidget::item {
     border: 1px solid transparent;
 }
 QTreeWidget::item:hover {
-    background-color: palette(midlight);
+    background-color: #f0f7ff;
 }
 QTreeWidget::item:selected {
-    background-color: palette(highlight);
-    color: palette(highlighted-text);
+    background-color: #dcebfd;
+    color: palette(text);
 }
 QTreeWidget::item:selected:!active {
-    background-color: palette(midlight);
+    background-color: #e8e8e8;
     color: palette(text);
 }
 QTreeWidget::branch:!has-children:hover {
-    background-color: palette(midlight);
+    background-color: #f0f7ff;
 }
 QTreeWidget::branch:!has-children:selected {
-    background-color: palette(highlight);
+    background-color: #dcebfd;
 }
 QTreeWidget::branch:!has-children:selected:!active {
-    background-color: palette(midlight);
+    background-color: #e8e8e8;
 }
 """
 
