@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import Qt, QThread, Signal
+from PySide6.QtGui import QColor, QFont, QPalette
 from PySide6.QtWidgets import (
     QApplication,
     QDialog,
@@ -36,6 +37,115 @@ from privilege import ensure_admin, is_admin
 
 DEFAULT_LANG = "zh-CN"
 SUPPORTED_LANGS = ("zh-CN", "en-US")
+
+# Windows / macOS 浅色：类似资源管理器的淡蓝选中
+_TREE_SELECTION_QSS_WIN = """
+QTreeWidget { outline: none; }
+QTreeWidget::item {
+    padding: 2px 4px;
+    border: 1px solid transparent;
+}
+QTreeWidget::item:hover {
+    background-color: #f0f7ff;
+}
+QTreeWidget::item:selected {
+    background-color: #dcebfd;
+    color: #1a1a1a;
+    border: 1px solid #a8cfff;
+}
+QTreeWidget::item:selected:!active {
+    background-color: #e8e8e8;
+    color: #1a1a1a;
+    border: 1px solid #c8c8c8;
+}
+"""
+
+# macOS 深色主题：浅字 + 深底选中，避免沿用浅色样式导致看不清
+_TREE_SELECTION_QSS_MAC_DARK = """
+QTreeWidget { outline: none; }
+QTreeWidget::item {
+    padding: 2px 4px;
+    border: 1px solid transparent;
+    color: #e2e8f0;
+}
+QTreeWidget::item:hover {
+    background-color: #2d3548;
+}
+QTreeWidget::item:selected {
+    background-color: #3d4d6b;
+    color: #f8fafc;
+    border: 1px solid #6b8cce;
+}
+QTreeWidget::item:selected:!active {
+    background-color: #343b4d;
+    color: #e2e8f0;
+    border: 1px solid #5a6270;
+}
+"""
+
+# 层级：浅色下深字 + 淡分区底（与 _TREE_SELECTION_QSS_WIN 搭配）
+_TREE_CAT_FG_LIGHT = QColor("#0f172a")
+_TREE_SUB_FG_LIGHT = QColor("#475569")
+_TREE_CAT_ROW_BG_LIGHT = QColor(235, 239, 246)
+
+# macOS 深色：浅字 + 略亮的分类行带，与系统黑底区分
+_TREE_CAT_FG_DARK = QColor("#f8fafc")
+_TREE_SUB_FG_DARK = QColor("#cbd5e1")
+_TREE_CAT_ROW_BG_DARK = QColor(48, 52, 64)
+
+
+def _app_prefers_dark() -> bool:
+    """系统/应用为深色时返回 True（含 ColorScheme.Unknown 时用窗口底色推断）。"""
+    app = QApplication.instance()
+    if app is None:
+        return False
+    scheme = app.styleHints().colorScheme()
+    if scheme == Qt.ColorScheme.Dark:
+        return True
+    if scheme == Qt.ColorScheme.Light:
+        return False
+    bg = app.palette().color(QPalette.ColorRole.Window)
+    return bg.lightness() < 128
+
+
+def _tree_row_visual() -> tuple[str, QColor, QColor, QColor]:
+    """(树 QSS, 分类字色, 子文件夹字色, 分类行底色)。Windows 固定浅色方案；macOS 按深浅色切换。"""
+    if sys.platform != "darwin":
+        return (
+            _TREE_SELECTION_QSS_WIN,
+            _TREE_CAT_FG_LIGHT,
+            _TREE_SUB_FG_LIGHT,
+            _TREE_CAT_ROW_BG_LIGHT,
+        )
+    if _app_prefers_dark():
+        return (
+            _TREE_SELECTION_QSS_MAC_DARK,
+            _TREE_CAT_FG_DARK,
+            _TREE_SUB_FG_DARK,
+            _TREE_CAT_ROW_BG_DARK,
+        )
+    return (
+        _TREE_SELECTION_QSS_WIN,
+        _TREE_CAT_FG_LIGHT,
+        _TREE_SUB_FG_LIGHT,
+        _TREE_CAT_ROW_BG_LIGHT,
+    )
+
+
+def _tree_hierarchy_fonts(tree: QTreeWidget) -> tuple[QFont, QFont]:
+    """分类 > 子文件夹 > 包名：字号递增 + 字重递减，与颜色/行底配合。"""
+    base = QFont(tree.font())
+    size = base.pointSize()
+    if size <= 0:
+        size = 9
+        base.setPointSize(size)
+    sub = QFont(base)
+    sub.setPointSize(size + 4)
+    sub.setWeight(QFont.Weight.Medium)
+    cat = QFont(base)
+    cat.setPointSize(size + 8)
+    cat.setWeight(QFont.Weight.Bold)
+    return cat, sub
 
 
 def _detect_default_lang() -> str:
@@ -67,7 +177,12 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
     tree = QTreeWidget()
     tree.setHeaderLabels([i18n.get("gui_tree_column", "组件")])
     tree.setAlternatingRowColors(True)
-    tree.setUniformRowHeights(True)
+    tree.setUniformRowHeights(False)
+    tree.setIndentation(24)
+    qss, cat_fg, sub_fg, cat_row_bg = _tree_row_visual()
+    tree.setStyleSheet(qss)
+
+    font_category, font_subfolder = _tree_hierarchy_fonts(tree)
 
     by_path: dict[str, MenuItem] = {str(it.installer_path): it for it in items}
 
@@ -78,6 +193,9 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
     for category in sorted(grouped.keys()):
         cat_item = QTreeWidgetItem(tree, [category])
         cat_item.setFlags(cat_item.flags() & ~Qt.ItemFlag.ItemIsUserCheckable)
+        cat_item.setFont(0, font_category)
+        cat_item.setForeground(0, cat_fg)
+        cat_item.setBackground(0, cat_row_bg)
         cat_item.setExpanded(True)
 
         by_sub: dict[str, list[MenuItem]] = defaultdict(list)
@@ -98,6 +216,8 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
             if sk:
                 sub_item = QTreeWidgetItem(cat_item, [i18n["gui_subfolder_label"].format(name=sk)])
                 sub_item.setFlags(sub_item.flags() & ~Qt.ItemFlag.ItemIsUserCheckable)
+                sub_item.setFont(0, font_subfolder)
+                sub_item.setForeground(0, sub_fg)
                 sub_item.setExpanded(True)
                 parent_for_leaves = sub_item
             else:
