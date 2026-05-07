@@ -42,40 +42,16 @@ _TREE_SELECTION_QSS = """
 QTreeWidget { outline: none; }
 QTreeWidget::item {
     padding: 2px 4px;
-    border: 1px solid transparent;
-}
-QTreeWidget::item:hover {
-    background-color: #f0f7ff;
-}
-QTreeWidget::item:selected {
-    background-color: #dcebfd;
-    color: palette(text);
-}
-QTreeWidget::item:selected:!active {
-    background-color: #e8e8e8;
-    color: palette(text);
-}
-QTreeWidget::branch:!has-children:hover {
-    background-color: #f0f7ff;
-}
-QTreeWidget::branch:!has-children:selected {
-    background-color: #dcebfd;
-}
-QTreeWidget::branch:!has-children:selected:!active {
-    background-color: #e8e8e8;
 }
 """
 
-def _tree_row_visual() -> tuple[str, QColor, QColor, QColor]:
+def _tree_row_visual() -> tuple[str, QColor, QColor]:
     """从系统 palette 派生分类/子文件夹颜色，自动适配深浅模式。"""
     pal = QApplication.instance().palette()
     cat_fg = pal.color(QPalette.ColorRole.Text)
     sub_fg = QColor(cat_fg)
     sub_fg.setAlphaF(0.65)
-    base = pal.color(QPalette.ColorRole.Base)
-    alt = pal.color(QPalette.ColorRole.AlternateBase)
-    cat_row_bg = alt if alt != base else QColor(base.red() ^ 0x10, base.green() ^ 0x10, base.blue() ^ 0x10)
-    return _TREE_SELECTION_QSS, cat_fg, sub_fg, cat_row_bg
+    return _TREE_SELECTION_QSS, cat_fg, sub_fg
 
 
 def _tree_hierarchy_fonts(tree: QTreeWidget) -> tuple[QFont, QFont]:
@@ -125,7 +101,7 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
     tree.setAlternatingRowColors(True)
     tree.setUniformRowHeights(False)
     tree.setIndentation(24)
-    qss, cat_fg, sub_fg, cat_row_bg = _tree_row_visual()
+    qss, cat_fg, sub_fg = _tree_row_visual()
     tree.setStyleSheet(qss)
 
     font_category, font_subfolder = _tree_hierarchy_fonts(tree)
@@ -141,7 +117,6 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
         cat_item.setFlags(cat_item.flags() & ~Qt.ItemFlag.ItemIsUserCheckable)
         cat_item.setFont(0, font_category)
         cat_item.setForeground(0, cat_fg)
-        cat_item.setBackground(0, cat_row_bg)
         cat_item.setExpanded(True)
 
         by_sub: dict[str, list[MenuItem]] = defaultdict(list)
