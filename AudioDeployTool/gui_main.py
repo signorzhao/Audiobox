@@ -64,6 +64,7 @@ QTreeWidget::branch {
     background-color: transparent;
     border: none;
     border-image: none;
+    image: none;
 }
 QTreeWidget::branch:hover {
     background-color: transparent;
@@ -71,6 +72,27 @@ QTreeWidget::branch:hover {
 QTreeWidget::branch:selected {
     background-color: transparent;
     border: none;
+    border-image: none;
+    image: none;
+}
+QTreeWidget::branch:has-siblings:!adjoins-item {
+    border-image: none;
+    image: none;
+}
+QTreeWidget::branch:has-siblings:adjoins-item {
+    border-image: none;
+    image: none;
+}
+QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {
+    border-image: none;
+    image: none;
+}
+QTreeWidget::branch:has-children:!has-siblings:closed,
+QTreeWidget::branch:closed:has-children:has-siblings {
+    border-image: none;
+}
+QTreeWidget::branch:open:has-children:!has-siblings,
+QTreeWidget::branch:open:has-children:has-siblings {
     border-image: none;
 }
 """
