@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from PySide6.QtCore import Qt, QThread, Signal
-from PySide6.QtGui import QColor, QFont, QPalette
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QApplication,
     QDialog,
@@ -37,74 +37,6 @@ from privilege import ensure_admin, is_admin
 
 DEFAULT_LANG = "zh-CN"
 SUPPORTED_LANGS = ("zh-CN", "en-US")
-
-_TREE_SELECTION_QSS = """
-QTreeWidget {
-    outline: none;
-    border: none;
-}
-QTreeWidget::item {
-    padding: 2px 4px;
-    background-color: transparent;
-    border: none;
-}
-QTreeWidget::item:hover {
-    background-color: transparent;
-}
-QTreeWidget::item:selected {
-    background-color: transparent;
-    color: palette(text);
-    border: none;
-}
-QTreeWidget::item:selected:!active {
-    background-color: transparent;
-    color: palette(text);
-}
-QTreeWidget::branch {
-    background-color: transparent;
-    border: none;
-    border-image: none;
-    image: none;
-}
-QTreeWidget::branch:hover {
-    background-color: transparent;
-}
-QTreeWidget::branch:selected {
-    background-color: transparent;
-    border: none;
-    border-image: none;
-    image: none;
-}
-QTreeWidget::branch:has-siblings:!adjoins-item {
-    border-image: none;
-    image: none;
-}
-QTreeWidget::branch:has-siblings:adjoins-item {
-    border-image: none;
-    image: none;
-}
-QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {
-    border-image: none;
-    image: none;
-}
-QTreeWidget::branch:has-children:!has-siblings:closed,
-QTreeWidget::branch:closed:has-children:has-siblings {
-    border-image: none;
-}
-QTreeWidget::branch:open:has-children:!has-siblings,
-QTreeWidget::branch:open:has-children:has-siblings {
-    border-image: none;
-}
-"""
-
-def _tree_row_visual() -> tuple[str, QColor, QColor]:
-    """从系统 palette 派生分类/子文件夹颜色，自动适配深浅模式。"""
-    pal = QApplication.instance().palette()
-    cat_fg = pal.color(QPalette.ColorRole.Text)
-    sub_fg = QColor(cat_fg)
-    sub_fg.setAlphaF(0.65)
-    return _TREE_SELECTION_QSS, cat_fg, sub_fg
-
 
 def _tree_hierarchy_fonts(tree: QTreeWidget) -> tuple[QFont, QFont]:
     """分类 > 子文件夹 > 包名：字号递增 + 字重递减，与颜色/行底配合。"""
@@ -153,8 +85,6 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
     tree.setAlternatingRowColors(False)
     tree.setUniformRowHeights(False)
     tree.setIndentation(24)
-    qss, cat_fg, sub_fg = _tree_row_visual()
-    tree.setStyleSheet(qss)
 
     font_category, font_subfolder = _tree_hierarchy_fonts(tree)
 
@@ -168,7 +98,6 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
         cat_item = QTreeWidgetItem(tree, [category])
         cat_item.setFlags(cat_item.flags() & ~Qt.ItemFlag.ItemIsUserCheckable)
         cat_item.setFont(0, font_category)
-        cat_item.setForeground(0, cat_fg)
         cat_item.setExpanded(True)
 
         by_sub: dict[str, list[MenuItem]] = defaultdict(list)
@@ -190,7 +119,6 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
                 sub_item = QTreeWidgetItem(cat_item, [i18n["gui_subfolder_label"].format(name=sk)])
                 sub_item.setFlags(sub_item.flags() & ~Qt.ItemFlag.ItemIsUserCheckable)
                 sub_item.setFont(0, font_subfolder)
-                sub_item.setForeground(0, sub_fg)
                 sub_item.setExpanded(True)
                 parent_for_leaves = sub_item
             else:
@@ -434,6 +362,9 @@ def run_gui(lang: str | None = None, *, skip_uac: bool = False) -> int:
         i18n = loader.load_locale(lang)
 
     app = QApplication(sys.argv)
+
+    import qdarkstyle
+    app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyside6'))
 
     if not skip_uac:
         if sys.platform == "win32" and not is_admin():
