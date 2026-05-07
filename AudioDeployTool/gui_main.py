@@ -351,6 +351,10 @@ class MainWindow(QMainWindow):
 
 def run_gui(lang: str | None = None, *, skip_uac: bool = False) -> int:
     """启动 Qt 事件循环；返回进程退出码。"""
+    if sys.platform == "win32":
+        import ctypes
+        ctypes.windll.kernel32.FreeConsole()
+
     base_dir = runtime_base_dir()
     loader = ConfigLoader(base_dir)
 
