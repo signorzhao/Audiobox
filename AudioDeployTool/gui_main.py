@@ -63,6 +63,7 @@ QTreeWidget::item:selected:!active {
 QTreeWidget::branch {
     background-color: transparent;
     border: none;
+    border-image: none;
 }
 QTreeWidget::branch:hover {
     background-color: transparent;
@@ -70,6 +71,7 @@ QTreeWidget::branch:hover {
 QTreeWidget::branch:selected {
     background-color: transparent;
     border: none;
+    border-image: none;
 }
 """
 
