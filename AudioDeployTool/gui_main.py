@@ -43,6 +43,23 @@ QTreeWidget { outline: none; }
 QTreeWidget::item {
     padding: 2px 4px;
 }
+QTreeWidget::item:hover {
+    background-color: transparent;
+}
+QTreeWidget::item:selected {
+    background-color: transparent;
+    color: palette(text);
+}
+QTreeWidget::item:selected:!active {
+    background-color: transparent;
+    color: palette(text);
+}
+QTreeWidget::branch:hover {
+    background-color: transparent;
+}
+QTreeWidget::branch:selected {
+    background-color: transparent;
+}
 """
 
 def _tree_row_visual() -> tuple[str, QColor, QColor]:
