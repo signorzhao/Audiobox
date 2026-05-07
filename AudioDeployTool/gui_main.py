@@ -363,7 +363,9 @@ def run_gui(lang: str | None = None, *, skip_uac: bool = False) -> int:
 
     app = QApplication(sys.argv)
 
-    from qfluentwidgets import setTheme, Theme
+    import io, contextlib
+    with contextlib.redirect_stdout(io.StringIO()):
+        from qfluentwidgets import setTheme, Theme
     setTheme(Theme.AUTO)
 
     if not skip_uac:
