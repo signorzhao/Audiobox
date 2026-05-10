@@ -16,6 +16,8 @@ cd AudioDeployTool
 pip install -r requirements.txt
 ```
 
+主要依赖：PySide6、PySide6-Fluent-Widgets（GUI 主题）、rich、questionary、PyYAML。
+
 ### 运行
 
 ```bash
@@ -29,7 +31,7 @@ python main.py --gui --no-uac   # 图形界面下调试（跳过提权）
 
 PyInstaller 打成的 **exe**：默认**直接进图形界面**（双击即可）；需要终端菜单时加 **`--cli`**。
 
-也可直接：`python gui_main.py`（等价于仅启动 GUI）。
+也可直接：`python gui_main.py`（等价于仅启动 GUI）。Windows 下双击 **`run_gui.pyw`** 可无 CMD 窗口启动 GUI。
 
 Windows 11 下 PyInstaller 打包 exe，并保持 **`packages.csv` / `config.yaml` / `Installers/` 与 exe 同目录可编辑** 的说明见：[Windows11下打包EXE与外置配置说明.md](../Docs/Windows11下打包EXE与外置配置说明.md)。
 
@@ -40,7 +42,8 @@ Windows 11 下 PyInstaller 打包 exe，并保持 **`packages.csv` / `config.yam
 ```
 AudioDeployTool/
 ├── main.py              # 主入口（CLI；支持 --gui）
-├── gui_main.py          # PySide6 图形界面入口
+├── gui_main.py          # PySide6 图形界面入口（Fluent Design 主题，自适应深/浅色）
+├── run_gui.pyw          # Windows 无控制台 GUI 启动入口（双击即用）
 ├── config.yaml          # 全局路径池（VST 检测路径等）
 ├── packages.csv         # 安装包表格（文件名、静默参数、检测字段等）
 ├── config_loader.py     # 配置与语言包加载
