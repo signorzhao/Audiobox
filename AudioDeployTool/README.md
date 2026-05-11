@@ -1,105 +1,137 @@
-# Audio Deploy CLI
+# Audio Deploy
 
-音频工作站自动化部署工具 — 用于快速批量部署 DAW、驱动、效果器插件等音频软件。
+音频工作站自动化部署工具
+Audio workstation deployment tool
 
-## 快速开始
+把"DAW、驱动、效果器一个一个手动点下一步"变成"勾一勾、一键装完"。
+Turn the tedious "install one by one" routine into "tick and go".
 
-### 环境要求
+---
 
-- Python 3.10+（源码运行）；**Windows 下打包 exe 推荐使用 Python 3.11**，步骤见 [Windows11 打包说明](../Docs/Windows11下打包EXE与外置配置说明.md)。
-- Windows 10/11（主要平台）或 macOS（基础兼容）
+## 中文使用说明
 
-### 安装依赖
+### 获取最新版本（首次使用 / 想确认是不是最新版）
 
-```bash
-cd AudioDeployTool
-pip install -r requirements.txt
-```
+双击程序根目录里的 **`sync_to_T.bat`**。它会自动从服务器拉取开发者维护的最新版，同步到你**本地 T 盘**上的程序文件夹——新增的安装包会下载下来，已经过期/被移除的文件也会被清理掉。
 
-主要依赖：PySide6、PySide6-Fluent-Widgets（GUI 主题）、rich、questionary、PyYAML。
+> - 默认同步目标是本地 **T 盘**（你电脑上的一块本地硬盘盘符），程序日常运行也在这里。
+> - 同步过程是**增量比对**的：没变化的文件不会重复传输，第二次起会很快。
+> - 同步完成后，再按下面的步骤启动程序，新增的软件就会出现在列表里。
 
-### 运行
+### 启动程序
 
-```bash
-python main.py              # 终端界面（默认自动检测系统语言）
-python main.py --lang en-US # 指定英文界面
-python main.py --no-uac     # 跳过 UAC 提权（调试用）
-python main.py --gui        # PySide6 图形界面（树形勾选，需 pip install -r requirements.txt）
-python main.py --gui --lang en-US
-python main.py --gui --no-uac   # 图形界面下调试（跳过提权）
-```
+**在主程序图标上点右键 → 选择「以管理员身份运行」**，然后在弹出的 UAC 窗口里点「是」。
 
-PyInstaller 打成的 **exe**：默认**直接进图形界面**（双击即可）；需要终端菜单时加 **`--cli`**。
+直接双击运行可能没反应或启动失败（尤其在企业域电脑上）。本程序需要管理员权限来安装驱动、写注册表，**请务必走「以管理员身份运行」这一步**。
 
-也可直接：`python gui_main.py`（等价于仅启动 GUI）。Windows 下双击 **`run_gui.pyw`** 可无 CMD 窗口启动 GUI。
+### 操作流程
 
-Windows 11 下 PyInstaller 打包 exe，并保持 **`packages.csv` / `config.yaml` / `Installers/` 与 exe 同目录可编辑** 的说明见：[Windows11下打包EXE与外置配置说明.md](../Docs/Windows11下打包EXE与外置配置说明.md)。
+1. **看列表**
+   程序会按**类型**和**厂牌**把所有可装软件分组列出来；已经装过的会自动标记 `[已安装]`。
 
-云端打包：仓库 **GitHub Actions**（`.github/workflows/build-windows.yml`）在 `main` 推送、PR 或手动运行时构建 Windows 产物，可在 Actions 页面下载 **Artifacts**（内含 exe、`_internal`、外置目录骨架，无示例安装包）。
+2. **搜索筛选**（界面顶部）
+   在搜索栏里输入关键词即可模糊查找软件，下列任意一种都能命中：
 
-## 目录结构
+   | 关键词类型 | 例子 |
+   |------------|------|
+   | 文件名 | `reaper`、`.exe` |
+   | 软件名 | `FabFilter Pro-C 2` |
+   | 类型 | `DAW`、`PLUGIN`、`SOFTWARE` |
+   | 厂牌 | `fabfilter`、`soundtoys` |
 
-```
-AudioDeployTool/
-├── main.py              # 主入口（CLI；支持 --gui）
-├── gui_main.py          # PySide6 图形界面入口（Fluent Design 主题，自适应深/浅色）
-├── run_gui.pyw          # Windows 无控制台 GUI 启动入口（双击即用）
-├── config.yaml          # 全局路径池（VST 检测路径等）
-├── packages.csv         # 安装包表格（文件名、静默参数、检测字段等）
-├── config_loader.py     # 配置与语言包加载
-├── packages_csv.py      # CSV 包表解析
-├── detector.py          # 已安装状态检测
-├── privilege.py         # UAC 自动提权（仅 Windows）
-├── menu.py              # 交互式复选菜单
-├── grouped_checkbox.py  # 带「全选」与组内条目联动显示的复选（基于 questionary）
-├── executor.py          # 安装执行引擎
-├── logger.py            # 错误日志
-├── reporter.py          # 结果报告表
-├── requirements.txt     # Python 依赖
-├── locales/
-│   ├── zh-CN.json       # 中文语言包
-│   └── en-US.json       # 英文语言包
-├── logs/                # 运行时错误日志输出
-└── Installers/          # 安装包存放目录
-    ├── daw/             # 宿主 / DAW
-    ├── software/      # 运行库与工具
-    └── plugin/        # 效果器与插件
-```
+   - 多个关键词**用空格分开**，需要全部命中才会显示（例 `fab q3`）。
+   - **已勾选的软件**即使不匹配搜索词也会**保留在列表里**，避免漏装。
 
-## 如何添加新安装包
+3. **勾选要安装的软件**
+   一项一项打勾，也可以用底部「**全选**」/「**清除勾选**」一次性操作。
 
-1. 将安装包文件放入 `Installers/<一级分类目录>/` 下（`daw`、`software`、`plugin` 与 `packages.csv` 的 `category` 一致）；若需要菜单中的「子文件夹 + 全选本组」，可再放一层子目录（如 `Installers/plugin/fabfilter/xxx.exe`），或在表格中填写 `menu_subfolder`。
-2. 在 `packages.csv` 中追加一行（可用 Excel、Numbers 或文本编辑器；**UTF-8** 保存，Excel 建议带 BOM 的 UTF-8，本工具已支持 `utf-8-sig`）。
+4. **点「开始安装」**
+   不用看着屏幕，进度条会显示当前进度。整个过程是静默的，不需要点任何安装向导的「下一步」。
 
-### packages.csv 列说明
+5. **查看结果**
+   安装完成后会弹出一份汇总报告，列出每个软件是「完成」「失败」还是「已跳过」，并给出失败建议。
 
-| 列名 | 必填 | 说明 |
-|------|------|------|
-| `filename` | 是 | 与 `Installers` 下安装包**文件名**完全一致 |
-| `name` | 是 | 菜单显示名称 |
-| `category` | 是 | 一级分组标题（与 `=== category ===` 对应） |
-| `menu_subfolder` | 否 | 非空时：在该分类下显示子分组、树形前缀，并提供「全选本分组」（同一分组内至少 2 个包时显示） |
-| `is_priority` | 否 | `true` / `1` / `yes` 表示优先安装 |
-| `win32_args` | 否 | Windows 静默安装参数 |
-| `darwin_args` | 否 | macOS 安装参数（预留） |
-| `check_absolute_path` | 否 | 已安装检测：绝对路径 |
-| `check_vst_file` | 否 | 已安装检测：VST 文件名 |
-| `vst_format` | 否 | 与 `check_vst_file` 搭配，对应 `config.yaml` 里 `vst_paths` 的键 |
-| `post_install_cmd` | 否 | 安装成功后执行的命令 |
-| `help_text` | 否 | 失败时在报告中的提示 |
+### 常见问题
 
-若未放置 `packages.csv` 或表内无有效数据行，则仅使用 `config.yaml` 中的 `packages`（YAML 字典）作为兼容方案。
+- **双击没反应 / 启动失败？**
+  请改用**右键「以管理员身份运行」**，再在 UAC 弹窗里点「是」。直接双击在部分电脑上会被静默拒绝。
 
-### config.yaml 中仍保留的内容
+- **某个软件装失败了，去哪看日志？**
+  程序所在目录下有一个 `logs/` 文件夹，里面是最近一次运行的错误日志，可以直接发给维护这台机器的同事。
 
-全局 `global_settings.vst_paths` 等；安装包条目可留空 `packages: {}`，改由 CSV 维护。
+- **怎么切换中英文界面？**
+  跟随系统语言自动切换，无需手动设置。
 
-## 工作流程
+- **列表里看不到我想装的某个软件？**
+  先双击 **`sync_to_T.bat`** 拉一下服务器上的最新版本，再重新启动程序；如果同步后还是没有，说明这个软件还没被开发者加进可装清单，请联系开发者补上。
 
-1. 启动时自动检测管理员权限（Windows），无权限则弹出 UAC 提权
-2. 加载 `config.yaml`、`packages.csv`（若存在）与语言包
-3. 扫描 `Installers/` 目录，匹配配置项
-4. 渲染交互式复选菜单；子分组内可选「全选本分组」；已安装的标注 `[已安装]`
-5. 用户选择后，按优先级排序执行静默安装
-6. 安装完成后执行 `post_install_cmd` 钩子
-7. 输出结果汇总报告表，失败项写入错误日志
+- **怎么知道我现在用的是不是最新版本？**
+  双击 **`sync_to_T.bat`** 就行——它会增量比对服务器与本地的差异；如果本地已经是最新，几乎是秒完，不会重复下载。建议每次准备给新机器部署前都跑一下。
+
+- **同一个软件之前装过，列表里却没有标「已安装」？**
+  说明检测路径与你电脑上的实际安装位置不一致，不影响使用，重复勾选安装也不会损坏现有版本，只会被静默覆盖。
+
+---
+
+## English Usage Guide
+
+### Update to the latest version (first run / when you want to make sure it's current)
+
+Double-click **`sync_to_T.bat`** in the program's root folder. It pulls the latest version — maintained by the developer — from the server and syncs it into the program folder on your **local T: drive**. New installers are downloaded; files that have been removed upstream are cleaned up too.
+
+> - The default sync target is the local **T: drive** (a physical drive letter on your own PC), where the program normally runs.
+> - The sync is **incremental** — unchanged files aren't re-transferred, so subsequent runs are fast.
+> - Once the sync finishes, launch the program as below and the newly added software will show up in the list.
+
+### Launch
+
+**Right-click the main program icon and choose "Run as administrator"**, then click **Yes** in the UAC dialog.
+
+A plain double-click may do nothing or fail to start (especially on domain-joined corporate PCs). The program needs administrator privileges to install drivers and write to the registry, so **always use "Run as administrator"**.
+
+### How to use
+
+1. **Browse the list**
+   Every available installer is grouped by **category** and **vendor**. Items already installed are tagged `[Installed]`.
+
+2. **Search & filter** (top bar)
+   Type any keyword in the search bar to fuzzy-find software. Matches any of:
+
+   | Field | Example |
+   |-------|---------|
+   | Filename | `reaper`, `.exe` |
+   | Display name | `FabFilter Pro-C 2` |
+   | Category | `DAW`, `PLUGIN`, `SOFTWARE` |
+   | Vendor | `fabfilter`, `soundtoys` |
+
+   - Multiple keywords **separated by spaces** are AND-matched (e.g. `fab q3`).
+   - **Already-checked items stay visible** even when they don't match the search, so you never forget what you've queued.
+
+3. **Tick the items you want**
+   Tick one by one, or use **Select all** / **Clear** at the bottom for a one-shot toggle.
+
+4. **Click Install**
+   Sit back. The progress bar shows live status. Every installer runs silently — you don't need to click any wizard's "Next" buttons.
+
+5. **Review the report**
+   When it's done, a summary dialog lists each item as Success / Failed / Skipped, with hints for failures.
+
+### FAQ
+
+- **Double-click does nothing / fails to launch?**
+  Use **Right-click → "Run as administrator"** instead, then click **Yes** in the UAC dialog. Plain double-click is silently rejected on some machines.
+
+- **Where can I find the error logs?**
+  Inside the `logs/` folder next to the program. It holds the most recent run — feel free to send it to whoever maintains the machine.
+
+- **How do I switch between Chinese and English?**
+  It follows your system locale automatically; no manual setup needed.
+
+- **Why can't I see a particular installer in the list?**
+  First, double-click **`sync_to_T.bat`** to pull the latest version from the server, then restart the program. If it still isn't there, the developer hasn't added it to the catalog yet — let them know.
+
+- **How do I know if I'm running the latest version?**
+  Just double-click **`sync_to_T.bat`** — it compares the server against your local folder incrementally; if you're already up to date it finishes in a second without re-downloading anything. It's a good idea to run it before deploying to a fresh machine.
+
+- **I installed this app before but it isn't tagged `[Installed]`?**
+  The detection path doesn't match your actual install location. It's harmless — ticking it again will only silently re-install over the existing version.
