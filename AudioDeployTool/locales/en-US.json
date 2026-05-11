@@ -29,6 +29,7 @@
   "gui_window_title": "Audio Workstation Deploy",
   "gui_tree_column": "Components",
   "gui_subfolder_label": "📂 {name}",
+  "gui_search_placeholder": "Search by filename / name / category / vendor (space-separated)",
   "gui_select_all": "Select all",
   "gui_clear": "Clear selection",
   "gui_install": "Install selected",

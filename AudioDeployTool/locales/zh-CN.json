@@ -29,6 +29,7 @@
   "gui_window_title": "音频工作站部署工具",
   "gui_tree_column": "组件",
   "gui_subfolder_label": "📂 {name}",
+  "gui_search_placeholder": "搜索文件名 / 名称 / 类型 / 厂牌（空格分隔多个关键词）",
   "gui_select_all": "全选",
   "gui_clear": "清除勾选",
   "gui_install": "开始安装",

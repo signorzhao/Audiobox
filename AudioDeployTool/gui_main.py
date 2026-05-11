@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QDialogButtonBox,
     QHBoxLayout,
     QLabel,
+    QLineEdit,
     QMainWindow,
     QMessageBox,
     QProgressBar,
@@ -140,6 +141,11 @@ def _build_tree_widget(items: list[MenuItem], i18n: dict[str, str]) -> tuple[QTr
                 )
                 leaf.setCheckState(0, Qt.CheckState.Unchecked)
                 leaf.setData(0, Qt.ItemDataRole.UserRole, str(it.installer_path))
+                sub_for_search = str(it.pkg_config.get("menu_subfolder", "")).strip()
+                haystack = " ".join(
+                    s for s in (it.filename, it.display_name, it.category, sub_for_search) if s
+                ).lower()
+                leaf.setData(0, Qt.ItemDataRole.UserRole + 1, haystack)
 
     tree.resizeColumnToContents(0)
     return tree, by_path
@@ -241,8 +247,19 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central)
         layout = QVBoxLayout(central)
 
+        self._search = QLineEdit()
+        self._search.setPlaceholderText(
+            i18n.get("gui_search_placeholder", "搜索文件名 / 名称 / 类型 / 厂牌")
+        )
+        self._search.setClearButtonEnabled(True)
+        layout.addWidget(self._search)
+
         self._tree, self._by_path = _build_tree_widget(items, i18n)
         layout.addWidget(self._tree, stretch=1)
+
+        self._filtering = False
+        self._search.textChanged.connect(self._on_search_text_changed)
+        self._tree.itemChanged.connect(self._on_tree_item_changed)
 
         btn_row = QHBoxLayout()
         self._btn_select_all = QPushButton(i18n.get("gui_select_all", "全选"))
@@ -265,13 +282,66 @@ class MainWindow(QMainWindow):
         self._status = QLabel("")
         layout.addWidget(self._status)
 
-        self._btn_select_all.clicked.connect(
-            lambda: _set_all_leaves(self._tree, Qt.CheckState.Checked)
-        )
-        self._btn_clear.clicked.connect(
-            lambda: _set_all_leaves(self._tree, Qt.CheckState.Unchecked)
-        )
+        self._btn_select_all.clicked.connect(self._on_select_all_clicked)
+        self._btn_clear.clicked.connect(self._on_clear_clicked)
         self._btn_install.clicked.connect(self._on_install_clicked)
+
+    def _on_select_all_clicked(self) -> None:
+        self._tree.blockSignals(True)
+        try:
+            _set_all_leaves(self._tree, Qt.CheckState.Checked)
+        finally:
+            self._tree.blockSignals(False)
+        if self._search.text().strip():
+            self._apply_search_filter()
+
+    def _on_clear_clicked(self) -> None:
+        self._tree.blockSignals(True)
+        try:
+            _set_all_leaves(self._tree, Qt.CheckState.Unchecked)
+        finally:
+            self._tree.blockSignals(False)
+        if self._search.text().strip():
+            self._apply_search_filter()
+
+    def _on_search_text_changed(self, _text: str) -> None:
+        self._apply_search_filter()
+
+    def _on_tree_item_changed(self, _item: QTreeWidgetItem, _column: int) -> None:
+        if self._filtering:
+            return
+        if self._search.text().strip():
+            self._apply_search_filter()
+
+    def _apply_search_filter(self) -> None:
+        tokens = [t for t in self._search.text().strip().lower().split() if t]
+        self._filtering = True
+        try:
+            for i in range(self._tree.topLevelItemCount()):
+                self._filter_node(self._tree.topLevelItem(i), tokens)
+        finally:
+            self._filtering = False
+
+    def _filter_node(self, item: QTreeWidgetItem, tokens: list[str]) -> bool:
+        path = item.data(0, Qt.ItemDataRole.UserRole)
+        if isinstance(path, str):
+            if not tokens:
+                visible = True
+            else:
+                haystack = item.data(0, Qt.ItemDataRole.UserRole + 1) or ""
+                matches = all(tok in haystack for tok in tokens)
+                checked = item.checkState(0) == Qt.CheckState.Checked
+                visible = matches or checked
+            item.setHidden(not visible)
+            return visible
+        any_visible = False
+        for i in range(item.childCount()):
+            if self._filter_node(item.child(i), tokens):
+                any_visible = True
+        item.setHidden(not any_visible)
+        if any_visible and tokens:
+            item.setExpanded(True)
+        return any_visible
 
     def _on_install_clicked(self) -> None:
         selected = _collect_checked_items(self._tree, self._by_path)
