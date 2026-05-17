@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import subprocess
-import sys
 from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from rich.console import Console
@@ -17,6 +17,7 @@ from rich.progress import (
     TimeElapsedColumn,
 )
 
+from install_command import build_command, requires_installer_file
 from logger import ErrorLogger
 from menu import MenuItem
 
@@ -41,27 +42,18 @@ def _sort_by_priority(items: list[MenuItem]) -> list[MenuItem]:
     return priority + rest
 
 
-def _build_command(item: MenuItem) -> str:
-    """根据当前平台拼接安装命令。"""
-    if sys.platform == "win32":
-        args = item.pkg_config.get("win32_args", "")
-    elif sys.platform == "darwin":
-        args = item.pkg_config.get("darwin_args", "")
-    else:
-        args = ""
-    return f'"{item.installer_path}" {args}'.strip()
-
-
 class Executor:
     def __init__(
         self,
         i18n: dict[str, str],
         logger: ErrorLogger,
         console: Console | None = None,
+        base_dir: Path | None = None,
     ):
         self.i18n = i18n
         self.logger = logger
         self.console = console or Console()
+        self.base_dir = base_dir or Path.cwd()
 
     def run(
         self,
@@ -112,10 +104,10 @@ class Executor:
         return results
 
     def _install_one(self, item: MenuItem) -> InstallResult:
-        cmd = _build_command(item)
+        cmd = build_command(item.installer_path, item.pkg_config, self.base_dir)
         help_text = item.pkg_config.get("help_text", "")
 
-        if not item.installer_path.exists():
+        if requires_installer_file(item.pkg_config) and not item.installer_path.exists():
             self.logger.log_failure(
                 app_name=item.display_name,
                 cmd=cmd,

@@ -110,7 +110,12 @@ def main() -> int:
 
     error_logger = ErrorLogger(loader.logs_dir)
     try:
-        executor = Executor(i18n=i18n, logger=error_logger, console=console)
+        executor = Executor(
+            i18n=i18n,
+            logger=error_logger,
+            console=console,
+            base_dir=base_dir,
+        )
         results = executor.run(selected)
     finally:
         error_logger.close()

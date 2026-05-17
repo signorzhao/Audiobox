@@ -63,6 +63,7 @@ def load_packages_csv(csv_path: Path) -> dict[str, dict[str, Any]] | None:
             for key in (
                 "win32_args",
                 "darwin_args",
+                "install_cmd",
                 "check_absolute_path",
                 "check_vst_file",
                 "vst_format",

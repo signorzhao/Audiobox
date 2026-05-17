@@ -1,4 +1,4 @@
-﻿filename,name,category,menu_subfolder,is_priority,win32_args,darwin_args,check_absolute_path,check_vst_file,vst_format,post_install_cmd,help_text
+﻿filename,name,category,menu_subfolder,is_priority,win32_args,darwin_args,install_cmd,check_absolute_path,check_vst_file,vst_format,post_install_cmd,help_text
 iLok License Support Win64.exe,iLok License Support,SOFTWARE,,TRUE,/S,,C:\Program Files (x86)\iLok License Manager\iLok License Manager.exe,,,net start LDSvc,如安装失败请手动重启或卸载旧版 iLok Manager
 reaper769_x64-install.exe,REAPER v7.69,DAW,,FALSE,/S,,C:\Program Files\REAPER\reaper.exe,,,,请确保后台没有正在运行的 REAPER 进程
 SoundtoysV55Bundle_5.5.4.18982_64.exe,Soundtoys V5 Bundle,PLUGIN,,FALSE,/VERYSILENT /SUPPRESSMSGBOXES /NORESTART,,C:\Program Files\vstplgin,,Decapitator.vst3,vst3_x64,,VST3未找到时请检查是否安装到自定义路径

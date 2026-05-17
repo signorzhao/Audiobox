@@ -194,11 +194,13 @@ class InstallWorker(QThread):
         items: list[MenuItem],
         i18n: dict[str, str],
         logs_dir: Path,
+        base_dir: Path,
     ):
         super().__init__()
         self._items = items
         self._i18n = i18n
         self._logs_dir = logs_dir
+        self._base_dir = base_dir
 
     def run(self) -> None:
         from rich.console import Console
@@ -206,7 +208,12 @@ class InstallWorker(QThread):
         logger = ErrorLogger(self._logs_dir)
         try:
             console = Console(file=open(os.devnull, "w"), width=120, force_terminal=True)
-            executor = Executor(self._i18n, logger, console=console)
+            executor = Executor(
+                self._i18n,
+                logger,
+                console=console,
+                base_dir=self._base_dir,
+            )
 
             def on_begin(i: int, total: int, item: MenuItem) -> None:
                 self.item_started.emit(i, total, item.display_name)
@@ -234,10 +241,12 @@ class MainWindow(QMainWindow):
         items: list[MenuItem],
         i18n: dict[str, str],
         logs_dir: Path,
+        base_dir: Path,
     ):
         super().__init__()
         self._i18n = i18n
         self._logs_dir = logs_dir
+        self._base_dir = base_dir
         self._worker: InstallWorker | None = None
 
         self.setWindowTitle(i18n.get("gui_window_title", i18n["title"]))
@@ -363,7 +372,9 @@ class MainWindow(QMainWindow):
         self._progress.setValue(0)
         self._status.setText(self._i18n.get("gui_install_running", "正在安装…"))
 
-        self._worker = InstallWorker(selected, self._i18n, self._logs_dir)
+        self._worker = InstallWorker(
+            selected, self._i18n, self._logs_dir, self._base_dir
+        )
         self._worker.item_started.connect(self._on_install_item_started)
         self._worker.item_finished.connect(self._on_install_item_finished)
         self._worker.finished_ok.connect(self._on_install_finished)
@@ -465,7 +476,7 @@ def run_gui(lang: str | None = None, *, skip_uac: bool = False) -> int:
         QMessageBox.information(None, i18n["title"], i18n["no_installers_found"])
         return 0
 
-    win = MainWindow(items, i18n, loader.logs_dir)
+    win = MainWindow(items, i18n, loader.logs_dir, base_dir)
     win.show()
     return int(app.exec())
 

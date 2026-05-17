@@ -71,6 +71,14 @@ Turn the tedious "install one by one" routine into "tick and go".
 - **同一个软件之前装过，列表里却没有标「已安装」？**
   说明检测路径与你电脑上的实际安装位置不一致，不影响使用，重复勾选安装也不会损坏现有版本，只会被静默覆盖。
 
+### 自定义安装命令（`install_cmd`，高级）
+
+部分安装包会捆绑弹出其他安装程序。可在 `packages.csv` 的 `install_cmd` 列填写**整行 shell 命令**（例如调用 Python 脚本做静默安装并结束干扰进程），此时不再使用 `win32_args`，也**不要求** `Installers/` 里一定有对应 `filename` 文件（仅配置行即可出现在列表中）。
+
+- 占位符：`{base}` = 程序根目录；`{installer}` = 若存在则为本包在 `Installers/` 下的路径，否则为按类型推断的占位路径。
+- 未填写 `install_cmd` 的包行为与过去完全一致：`"安装包路径" + win32_args`。
+- 示例：`python "{base}\scripts\my_install.py" "{installer}"`
+
 ---
 
 ## English Usage Guide

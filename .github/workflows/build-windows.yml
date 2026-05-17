@@ -3,7 +3,7 @@ name: Build Windows (PyInstaller)
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/custom-install-cmd]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -72,7 +72,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AudioDeploy-Windows-${{ github.sha }}
+          name: AudioDeploy-Windows-${{ github.ref_name }}-${{ github.sha }}
           path: staging/AudioDeploy
           if-no-files-found: error
           # 默认会排除以「.」开头的文件，侧车里用 .gitkeep 占位时子目录会丢

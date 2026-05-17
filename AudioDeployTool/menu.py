@@ -10,6 +10,7 @@ import questionary
 
 from detector import InstallDetector
 from grouped_checkbox import ALL_SENTINEL, grouped_checkbox
+from install_command import find_installer_path, uses_install_cmd
 
 
 class MenuItem:
@@ -90,6 +91,31 @@ def scan_installers(
                 installer_path=path,
                 pkg_config=pkg_config,
                 configured=configured,
+                installed=installed,
+            )
+        )
+
+    seen_filenames = {it.filename for it in items}
+    for filename, base in packages_config.items():
+        if filename in seen_filenames:
+            continue
+        if not uses_install_cmd(base):
+            continue
+        pkg_config = dict(base)
+        category = str(pkg_config.get("category", ""))
+        path = find_installer_path(installers_dir, filename, category)
+        sub = str(pkg_config.get("menu_subfolder", "")).strip()
+        if not sub:
+            _, auto_sub = _relative_parts(path, installers_dir)
+            if auto_sub:
+                pkg_config["menu_subfolder"] = auto_sub
+        installed = detector.is_installed(pkg_config)
+        items.append(
+            MenuItem(
+                filename=filename,
+                installer_path=path,
+                pkg_config=pkg_config,
+                configured=True,
                 installed=installed,
             )
         )
